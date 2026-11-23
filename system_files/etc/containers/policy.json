@@ -20,7 +20,7 @@
       ]
     },
     "docker": {
-      "ghcr.io/DataLabTechTV/dltcore": [
+      "ghcr.io/datalabtechtv/dltcore": [
         {
           "type": "sigstoreSigned",
           "keyPath": "/etc/pki/containers/cosign.pub"
