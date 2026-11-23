@@ -30,6 +30,15 @@ jobs:
       packages: write
       id-token: write
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tag: stable
+            base_tag: stable
+          - tag: stable-nvidia
+            base_tag: stable-nvidia
+
     steps:
       # These stage versions are pinned by https://github.com/renovatebot/renovate
       - name: Checkout
@@ -72,7 +81,8 @@ jobs:
         run: |
           just build \
             ${IMAGE_NAME} \
-            ${DEFAULT_TAG}
+            ${{ matrix.tag }} \
+            ${{ matrix.base_tag }}
 
       # This is optional, this provides smaller delta updates
       - name: Rechunk with rpm-ostree
@@ -80,7 +90,7 @@ jobs:
         run: |
           just ostree-rechunk \
             ${IMAGE_NAME} \
-            ${DEFAULT_TAG}
+            ${{ matrix.tag }}
 
       # If you are feeling adventurous, use the new distro agnostic rechunker
       # https://github.com/coreos/chunkah
@@ -94,14 +104,20 @@ jobs:
 
       - name: Generate Build Tags
         id: gen-build-tags
+        env:
+          IMAGE_TAG: ${{ matrix.tag }}
         run: |
           alias_tags="$(just generate-build-tags \
                         ${IMAGE_NAME} \
-                        ${DEFAULT_TAG})"
+                        ${IMAGE_TAG})"
+
+          if [[ "${IMAGE_TAG}" == "stable" ]]; then
+            TAGS="${TAGS} latest"
+          fi
 
           echo "Tags for this Action..."
-          echo "${alias_tags}"
-          echo "alias_tags=${alias_tags}" >> $GITHUB_OUTPUT
+          echo "${TAGS}"
+          echo "alias_tags=${TAGS}" >> "$GITHUB_OUTPUT"
 
       - name: Tag Image
         id: tag-images

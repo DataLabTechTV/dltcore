@@ -7,6 +7,7 @@ export image_desc := env_var("IMAGE_DESC")
 export image_keywords := env_var("IMAGE_KEYWORDS")
 export image_logo_url := env_var("IMAGE_LOGO_URL")
 export default_tag := env_var("DEFAULT_TAG")
+export default_base_tag := env_var("DEFAULT_BASE_TAG")
 export bib_image := env_var("BIB_IMAGE")
 
 alias build-vm := build-qcow2
@@ -93,12 +94,12 @@ sudoif command *args:
 #
 
 # Build the image using the specified parameters
-build $target_image=image_name $tag=default_tag:
+build $target_image=image_name $tag=default_tag $base_tag=default_base_tag:
     #!/usr/bin/env bash
 
     set -euox pipefail
 
-    BUILD_ARGS=()
+    BUILD_ARGS=("--build-arg" "BASE_TAG={{ base_tag }}")
     LABELS=()
     if [[ -z "$(git status -s)" ]]; then
         GIT_SHA=$(git rev-parse --short HEAD)
@@ -206,10 +207,8 @@ generate-build-tags $target_image=image_name $tag=default_tag:
         GIT_SHA=$(git rev-parse --short HEAD)
         BUILD_TAGS+=("${tag}-${GIT_SHA}")
         BUILD_TAGS+=("${tag}-${DATE}-${GIT_SHA}")
-        BUILD_TAGS+=("${DATE}-${GIT_SHA}")
     fi
 
-    BUILD_TAGS+=("${DATE}")
     BUILD_TAGS+=("${tag}")
     BUILD_TAGS+=("${tag}-${DATE}")
 
