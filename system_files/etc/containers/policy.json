@@ -5,6 +5,13 @@
     }
   ],
   "transports": {
+    "containers-storage": {
+      "localhost/dltcore": [
+        {
+          "type": "insecureAcceptAnything"
+        }
+      ]
+    },
     "docker": {
       "ghcr.io/DataLabTechTV/dltcore": [
         {
