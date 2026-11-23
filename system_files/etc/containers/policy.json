@@ -6,7 +6,7 @@
   ],
   "transports": {
     "containers-storage": {
-      "localhost/dltcore": [
+      "": [
         {
           "type": "insecureAcceptAnything"
         }
