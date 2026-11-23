@@ -12,6 +12,13 @@
         }
       ]
     },
+    "oci": {
+      "": [
+        {
+          "type": "insecureAcceptAnything"
+        }
+      ]
+    },
     "docker": {
       "ghcr.io/DataLabTechTV/dltcore": [
         {
