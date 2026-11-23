@@ -175,7 +175,7 @@ ostree-rechunk $target_image=image_name $tag=default_tag:
     GRAPHROOT="$(podman info --format '{{ '{{.Store.GraphRoot}}' }}')"
 
     LABELS=$(podman inspect "${RPM_OSTREE_CHUNKER_IMAGE}" \
-        --format '{{{{range $k, $v := .Config.Labels}}--label {{{{ $k }}={{{{ $v }} {{{{end}}')
+        --format '{{{{range $k, $v := .Config.Labels}}--label "{{{{ $k }}={{{{ $v }}" {{{{end}}')
 
     podman run --rm --pull=never --privileged \
       --mount=type=image,src="${target_image}:${tag}",target=/rpm-ostree \
