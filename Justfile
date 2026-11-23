@@ -174,8 +174,13 @@ ostree-rechunk $target_image=image_name $tag=default_tag:
 
     GRAPHROOT="$(podman info --format '{{ '{{.Store.GraphRoot}}' }}')"
 
-    LABELS=$(podman inspect "${RPM_OSTREE_CHUNKER_IMAGE}" \
-        --format '{{{{range $k, $v := .Config.Labels}}--label "{{{{ $k }}={{{{ $v }}" {{{{end}}')
+    LABELS=()
+    while IFS= read -r label; do
+      LABELS+=(--label "$label")
+    done < <(
+      podman inspect "${RPM_OSTREE_CHUNKER_IMAGE}" \
+        --format '{{{{range $k, $v := .Config.Labels}}{{{{printf "%s=%s\n" $k $v}}{{{{end}}'
+    )
 
     podman run --rm --pull=never --privileged \
       --mount=type=image,src="${target_image}:${tag}",target=/rpm-ostree \
@@ -189,7 +194,7 @@ ostree-rechunk $target_image=image_name $tag=default_tag:
       --bootc \
       --rootfs /rpm-ostree \
       --output "containers-storage:[overlay@/run/host-container-storage+/run/rpm-ostree-storage]localhost/${target_image}:${tag}" \
-      $LABELS
+      "${LABELS[@]}"
 
 # Generate Default Tag
 [group('Utility')]
