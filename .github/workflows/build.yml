@@ -112,12 +112,12 @@ jobs:
                         ${IMAGE_TAG})"
 
           if [[ "${IMAGE_TAG}" == "stable" ]]; then
-            TAGS="${TAGS} latest"
+            alias_tags="${alias_tags} latest"
           fi
 
           echo "Tags for this Action..."
-          echo "${TAGS}"
-          echo "alias_tags=${TAGS}" >> "$GITHUB_OUTPUT"
+          echo "${alias_tags}"
+          echo "alias_tags=${alias_tags}" >> "$GITHUB_OUTPUT"
 
       - name: Tag Image
         id: tag-images
