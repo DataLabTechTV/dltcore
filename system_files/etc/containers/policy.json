@@ -1,29 +1,19 @@
 {
   "default": [
     {
-      "type": "reject"
+      "type": "insecureAcceptAnything"
     }
   ],
   "transports": {
-    "containers-storage": {
-      "": [
-        {
-          "type": "insecureAcceptAnything"
-        }
-      ]
-    },
-    "oci": {
-      "": [
-        {
-          "type": "insecureAcceptAnything"
-        }
-      ]
-    },
     "docker": {
       "ghcr.io/datalabtechtv/dltcore": [
         {
           "type": "sigstoreSigned",
-          "keyPath": "/etc/pki/containers/cosign.pub"
+          "keyPath": "/etc/containers/datalabtechtv.pub",
+          "signedIdentity": {
+            "type": "exactRepository",
+            "dockerRepository": "ghcr.io/datalabtechtv/dltcore"
+          }
         }
       ]
     }
