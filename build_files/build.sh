@@ -12,7 +12,7 @@ dnf5 install -y btop grafana grafana-pcp
 # Grafana
 firewall-offline-cmd --add-service=grafana
 
-# Debug
+# --- Debug ---
 ls -l /etc/grafana
 ls -ld /etc/grafana
 
@@ -21,6 +21,10 @@ chmod 755 /etc/grafana
 
 chown -R grafana:grafana /var/lib/grafana
 chmod 755 /var/lib/grafana
+
+# --- Debug ---
+ls -l /etc/grafana
+ls -ld /etc/grafana
 
 # System services
 systemctl enable podman.socket pmproxy.service grafana-server.service
