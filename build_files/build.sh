@@ -12,6 +12,10 @@ dnf5 install -y btop grafana grafana-pcp
 # Grafana
 firewall-offline-cmd --add-service=grafana
 
+# Debug
+ls -l /etc/grafana
+ls -ld /etc/grafana
+
 chown -R root:grafana /etc/grafana
 chmod 755 /etc/grafana
 
