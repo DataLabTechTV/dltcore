@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ouex pipefail
+set -euxo pipefail
 
 rm -rfv /usr/share/cockpit/zfs
 rm -fv /usr/share/polkit-1/actions/org.45drives.*
@@ -9,4 +9,14 @@ cp -avf "/ctx/system_files"/. /
 
 dnf5 install -y btop grafana grafana-pcp
 
-systemctl enable podman.socket pmproxy.service
+# Grafana
+firewall-offline-cmd --add-service=grafana
+
+chown -R root:grafana /etc/grafana
+chmod 755 /etc/grafana
+
+chown -R grafana:grafana /var/lib/grafana
+chmod 755 /var/lib/grafana
+
+# System services
+systemctl enable podman.socket pmproxy.service grafana-server.service
