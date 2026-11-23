@@ -6,13 +6,12 @@
   ],
   "transports": {
     "docker": {
-      "ghcr.io/datalabtechtv/dltcore": [
+      "ghcr.io/datalabtechtv": [
         {
           "type": "sigstoreSigned",
           "keyPath": "/etc/containers/datalabtechtv.pub",
           "signedIdentity": {
-            "type": "exactRepository",
-            "dockerRepository": "ghcr.io/datalabtechtv/dltcore"
+            "type": "matchRepository"
           }
         }
       ]
