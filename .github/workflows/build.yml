@@ -40,8 +40,8 @@ jobs:
             base_tag: stable-nvidia
 
     outputs:
-      IMAGE_REGISTRY: ${{ steps.prepare-environment.outputs.IMAGE_REGISTRY }}
-      IMAGE_NAME: ${{ steps.prepare-environment.outputs.IMAGE_NAME }}
+      IMAGE_REGISTRY: ${{ steps.export-outputs.outputs.IMAGE_REGISTRY }}
+      IMAGE_NAME: ${{ steps.export-outputs.outputs.IMAGE_NAME }}
 
     steps:
       # These stage versions are pinned by https://github.com/renovatebot/renovate
@@ -74,11 +74,16 @@ jobs:
           echo "DEFAULT_TAG=${DEFAULT_TAG}" >> $GITHUB_ENV
 
       - name: Prepare environment
-        id: prepare-environment
         run: |
           # Lowercase the image uri https://github.com/macbre/push-to-ghcr/issues/12
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
+
+      - name: Export outputs
+        id: export-outputs
+        run: |
+          echo "IMAGE_REGISTRY=${IMAGE_REGISTRY}" >> "$GITHUB_OUTPUT"
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
 
       # This actually builds the container image
       - name: Build Image
