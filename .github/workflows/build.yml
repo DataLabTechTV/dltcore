@@ -181,7 +181,7 @@ jobs:
 
   push_artifact_hub_metadata:
     needs: build_push
-    name: Push artifacthub-repo.yml
+    name: Push Artifact Hub metadata
     runs-on: ubuntu-26.04
 
     permissions:
