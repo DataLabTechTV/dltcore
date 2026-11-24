@@ -1,0 +1,15 @@
+[Unit]
+Description=Install PCP libvirt PMDA
+After=pmcd.service libvirtd.service
+Requires=pmcd.service
+ConditionPathExists=!/var/lib/pcp/.libvirt-pmda-installed
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/lib/pcp/pmdas/libvirt
+ExecStart=/var/lib/pcp/pmdas/libvirt/Install -e
+ExecStartPost=/usr/bin/touch /var/lib/pcp/.libvirt-pmda-installed
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

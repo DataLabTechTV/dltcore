@@ -17,4 +17,4 @@ dnf5 -y --enable-repo=terra install fantasquesansmono-nerd-fonts
 firewall-offline-cmd --add-service=grafana
 
 # System services
-systemctl enable podman.socket pmproxy.service
+systemctl enable podman.socket pmproxy.service pcp-libvirt-pmda.service
