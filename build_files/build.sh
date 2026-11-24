@@ -10,7 +10,7 @@ cp -avf "/ctx/system_files"/. /
 dnf5 -y install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 dnf5 config-manager disable terra
 
-dnf5 install -y btop pcp-pmda-libvirt
+dnf5 install -y kmscon-freetype btop pcp-pmda-libvirt
 dnf5 -y --enable-repo=terra install fantasquesansmono-nerd-fonts
 
 # Firewall
