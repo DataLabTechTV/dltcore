@@ -34,9 +34,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - tag: stable
+          - tag: latest
             base_tag: stable
-          - tag: stable-nvidia
+          - tag: latest-nvidia
             base_tag: stable-nvidia
 
     steps:
@@ -110,10 +110,6 @@ jobs:
           alias_tags="$(just generate-build-tags \
                         ${IMAGE_NAME} \
                         ${IMAGE_TAG})"
-
-          if [[ "${IMAGE_TAG}" == "stable" ]]; then
-            alias_tags="${alias_tags} latest"
-          fi
 
           echo "Tags for this Action..."
           echo "${alias_tags}"
