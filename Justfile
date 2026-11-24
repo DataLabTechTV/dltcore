@@ -174,12 +174,9 @@ ostree-rechunk $target_image=image_name $tag=default_tag:
 
     GRAPHROOT="$(podman info --format '{{ '{{.Store.GraphRoot}}' }}')"
 
-    LABELS=()
-    while IFS= read -r label; do
-      LABELS+=(--label "$label")
-    done < <(
-      podman inspect "${RPM_OSTREE_CHUNKER_IMAGE}" \
-        --format '{{{{range $k, $v := .Config.Labels}}{{{{printf "%s=%s\n" $k $v}}{{{{end}}'
+    mapfile -t LABELS < <(
+      podman inspect "${RPM_OSTREE_CHUNKER_IMAGE}" --format '{{{{json .Config.Labels}}' |
+      jq -r 'to_entries[] | "--label", "\(.key)=\(.value)"'
     )
 
     podman run --rm --pull=never --privileged \
