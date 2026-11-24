@@ -70,6 +70,7 @@ jobs:
           echo "DEFAULT_TAG=${DEFAULT_TAG}" >> $GITHUB_ENV
 
       - name: Prepare environment
+        id: prepare-environment
         run: |
           # Lowercase the image uri https://github.com/macbre/push-to-ghcr/issues/12
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
@@ -176,7 +177,8 @@ jobs:
           cosign sign -y --new-bundle-format=false --use-signing-config=false --key env://COSIGN_PRIVATE_KEY ${IMAGE_REGISTRY}/${IMAGE_NAME}@${DIGEST}
 
     outputs:
-      IMAGE_NAME: ${{ steps.image-name.outputs.IMAGE_NAME }}
+      IMAGE_REGISTRY: ${{ steps.prepare-environment.outputs.IMAGE_REGISTRY }}
+      IMAGE_NAME: ${{ steps.prepare-environment.outputs.IMAGE_NAME }}
 
   push_artifact_hub_metadata:
     needs: build_push
@@ -193,9 +195,12 @@ jobs:
 
       - name: Push Artifact Hub metadata
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        env:
+          IMAGE_REGISTRY: "${{ needs.prepare-environment.outputs.IMAGE_REGISTRY }}"
+          IMAGE_NAME: "${{ needs.prepare-environment.outputs.IMAGE_NAME }}"
         run: |
           oras push \
-            ${{ env.IMAGE_REGISTRY }}/${{ needs.image-name.outputs.IMAGE_NAME }}:artifacthub.io \
+            ${IMAGE_REGISTRY}/${IMAGE_NAME}:artifacthub.io \
             --config /dev/null:application/vnd.cncf.artifacthub.config.v1+yaml \
             artifacthub-repo.yml:application/vnd.cncf.artifacthub.repository-metadata.layer.v1.yaml \
             --username "${{ github.actor }}" \
