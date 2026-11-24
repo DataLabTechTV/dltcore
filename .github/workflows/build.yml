@@ -39,6 +39,10 @@ jobs:
           - tag: latest-nvidia
             base_tag: stable-nvidia
 
+    outputs:
+      IMAGE_REGISTRY: ${{ steps.prepare-environment.outputs.IMAGE_REGISTRY }}
+      IMAGE_NAME: ${{ steps.prepare-environment.outputs.IMAGE_NAME }}
+
     steps:
       # These stage versions are pinned by https://github.com/renovatebot/renovate
       - name: Checkout
@@ -176,10 +180,6 @@ jobs:
           # use old bundle format, so we can use newer cosign 3.X.X instead of 2.X.X
           cosign sign -y --new-bundle-format=false --use-signing-config=false --key env://COSIGN_PRIVATE_KEY ${IMAGE_REGISTRY}/${IMAGE_NAME}@${DIGEST}
 
-    outputs:
-      IMAGE_REGISTRY: ${{ steps.prepare-environment.outputs.IMAGE_REGISTRY }}
-      IMAGE_NAME: ${{ steps.prepare-environment.outputs.IMAGE_NAME }}
-
   push_artifact_hub_metadata:
     needs: build_push
     name: Push Artifact Hub metadata
@@ -200,8 +200,8 @@ jobs:
       - name: Push Artifact Hub metadata
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         env:
-          IMAGE_REGISTRY: "${{ needs.prepare-environment.outputs.IMAGE_REGISTRY }}"
-          IMAGE_NAME: "${{ needs.prepare-environment.outputs.IMAGE_NAME }}"
+          IMAGE_REGISTRY: ${{ needs.build_push.outputs.IMAGE_REGISTRY }}
+          IMAGE_NAME: ${{ needs.build_push.outputs.IMAGE_NAME }}
         run: |
           oras push \
             ${IMAGE_REGISTRY}/${IMAGE_NAME}:artifacthub.io \
