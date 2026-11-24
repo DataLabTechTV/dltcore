@@ -7,6 +7,8 @@ rm -fv /usr/share/polkit-1/rules.d/org.45drives.*
 
 cp -avf "/ctx/system_files"/. /
 
+sed -i 's/^resp\.enabled *=.*/resp.enabled = true/' /etc/pcp/pmproxy/pmproxy.conf
+
 dnf5 -y install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 dnf5 config-manager disable terra
 

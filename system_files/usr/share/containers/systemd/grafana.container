@@ -1,13 +1,15 @@
 [Unit]
 Description=Grafana with PCP plugin
-After=network-online.target
-Wants=network-online.target
+After=network-online.target valkey.service
+Wants=network-online.target valkey.service
 
 [Container]
 ContainerName=grafana
 Image=docker.io/grafana/grafana:13.3.1
 PublishPort=3000:3000
 Volume=grafana-data:/var/lib/grafana
+Volume=/usr/share/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+Volume=/usr/share/grafana/provisioning/plugins:/etc/grafana/provisioning/plugins:ro
 Network=host
 Environment=GF_INSTALL_PLUGINS=https://github.com/performancecopilot/grafana-pcp/releases/download/v6.2.4/performancecopilot-pcp-app-6.2.4.zip;performancecopilot-pcp-app
 Environment=GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=performancecopilot-pcp-app,pcp-valkey-datasource,pcp-vector-datasource,pcp-bpftrace-datasource,pcp-flamegraph-panel,pcp-breadcrumbs-panel,pcp-troubleshooting-panel
