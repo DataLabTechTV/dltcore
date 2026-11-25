@@ -35,9 +35,9 @@ jobs:
       matrix:
         include:
           - tag: latest
-            base_tag: stable-20261123
+            base_tag: stable
           - tag: latest-nvidia
-            base_tag: stable-nvidia-20261123
+            base_tag: stable-nvidia
 
     outputs:
       IMAGE_REGISTRY: ${{ steps.export-outputs.outputs.IMAGE_REGISTRY }}
