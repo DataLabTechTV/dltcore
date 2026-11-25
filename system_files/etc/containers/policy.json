@@ -9,7 +9,7 @@
       "ghcr.io/datalabtechtv": [
         {
           "type": "sigstoreSigned",
-          "keyPath": "/etc/containers/datalabtechtv.pub",
+          "keyPath": "/etc/pki/containers/datalabtechtv.pub",
           "signedIdentity": {
             "type": "matchRepository"
           }
