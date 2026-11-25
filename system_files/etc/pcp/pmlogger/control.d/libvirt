@@ -1,0 +1,2 @@
+$version=1.1
+LOCALHOSTNAME  n  n  PCP_ARCHIVE_DIR/libvirt  -r -T24h10m -c /etc/pcp/pmlogger/pmlogger-libvirt.config -v 100mb
