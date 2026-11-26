@@ -3,9 +3,9 @@ datasources:
   - name: PCP Valkey
     type: performancecopilot-valkey-datasource
     access: proxy
-    url: http://127.0.0.1:44322
+    url: http://localhost:44322
     isDefault: true
   - name: PCP Vector
     type: performancecopilot-vector-datasource
     access: proxy
-    url: http://127.0.0.1:44322
+    url: http://localhost:44322
