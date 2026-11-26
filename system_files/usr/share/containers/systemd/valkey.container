@@ -5,7 +5,7 @@ Wants=network-online.target
 
 [Container]
 ContainerName=valkey
-Image=docker.io/valkey/valkey:9-trixie
+Image=docker.io/valkey/valkey-bundle:9-alpine
 Network=host
 Volume=valkey-data:/data
 Exec=valkey-server --bind 127.0.0.1 --save 300 100 --appendonly no --maxmemory 512mb --maxmemory-policy noeviction
