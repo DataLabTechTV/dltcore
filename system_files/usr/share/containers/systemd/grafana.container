@@ -5,7 +5,7 @@ Wants=network-online.target valkey.service
 
 [Container]
 ContainerName=grafana
-Image=docker.io/grafana/grafana:13.3.1
+Image=docker.io/grafana/grafana:13.3
 PublishPort=3000:3000
 Volume=grafana-data:/var/lib/grafana
 Volume=/usr/share/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
